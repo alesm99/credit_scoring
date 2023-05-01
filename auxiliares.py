@@ -41,5 +41,6 @@ def categorizar(df:pd.DataFrame,col:str,umbral:float=.05,valor:str='other')->pd.
     Returns:
         pd.Series: serie categorizada
     """
-    vals=(df[col].value_counts(normalize=True)<umbral).reset_index().query(f'{col}==True')['index'].values
-    return df[col].replace(list(vals),valor)
+    aux=df[col].value_counts(normalize=True)<umbral
+    mapa={v:valor for v in aux[aux].index}
+    return df[col].replace(mapa)
