@@ -1,0 +1,43 @@
+\subsection{Naive Bayes}
+
+El método Naive Bayes, es uno de los clasificadores más pobres al construir modelos de credit scoring, sin embrago, dada su facilidad, es útil para introducir los conceptos fundamentales para la construcción de scorecard. Este método asume que las características de los solicitantes en el scorecard son independientes (lo cual no es cierto en la práctica)
+
+Sean $p_G$ y $ p_B$ las proporciones de buenos y malos en la muestra (conjunto de entrenamiento $ \mathcal{D}$), asumamos, además, que las variables $X^1, X^2,…, X^d$ tienen un número finito de atributos discretos,y, $P(G|\mathbf{x})$ y  $P(B|\mathbf{x})$ como fueron definidos anteriormente.
+
+Aplicando el teorema de Bayes obtenemos:
+
+    \begin{equation}
+            \notag p(G \mid \mathbf{x})=\frac{p(\mathbf{x} \mid G) p_G}{p(\mathbf{x})}
+    \end{equation}
+
+        \begin{equation}
+            \notag p(B \mid \mathbf{x})=\frac{p(\mathbf{x} \mid B) p_B}{p(\mathbf{x})}
+    \end{equation}
+
+Dividiendo las ecuaciones anteriores obtenemos:
+
+\begin{equation}
+    \notag \frac{p(G \mid \mathbf{x})}{p(B \mid \mathbf{x})}=\frac{\left(p(\mathbf{x} \mid G) p_G\right)}{\left(p(\mathbf{x} \mid B) p_B\right)}
+\end{equation}
+
+Aplicando el logaritmo natural obtenemos el score previamente definido:
+
+\begin{equation}
+    \notag  S(\mathbf{x})=\ln \left(\frac{P(\mathbf{x} \mid G) p_G}{P(\mathbf{x} \mid B) p_B}\right)=\ln \left(\frac{p_G}{p_B}\right)+\ln \left(\frac{P(\mathbf{x} \mid G)}{P(\mathbf{x} \mid B)}\right) 
+\end{equation}
+
+El score $ S(\mathbf{x})$ es un estadístico que nos permite calcular directamente  la probabilidad $P(\mathbf{x})$.El termino $\ln \left(\frac{P(\mathbf{x} \mid G)}{P(\mathbf{x} \mid B)}\right)$ es el WOE, un WOE de cero indica que el conocimiento de las características del solicitante no cambia la estimación del estatus de bueno, si el WOE es positivo las características aumentan la posibilidad de ser bueno, mientras que, si el WOE es negativo la posibilidad de ser bueno decrece.
+
+Usando el supuesto de que las variables $X^1, X^2,…, X^d$ son independientes tenemos que:
+
+$$
+\begin{aligned}
+s(\mathbf{x})= & \ln \left(\frac{p(G \mid \mathbf{x})}{p(B \mid \mathbf{x})}\right)
+=\ln \left(\frac{p_G p(\mathbf{x} \mid G)}{p_B p(\mathbf{x} \mid B)}\right)
+=\ln \left(\frac{p_G}{p_B}\right)+\ln \left(\frac{p(\mathbf{x} \mid G)}{p(\mathbf{x} \mid B)}\right) \\
+& = \ln \left(\frac{p_G}{p_B}\right)+\ln \left(\frac{p(\mathbf{x_1} \mid G)*...*p(\mathbf{x_d} \mid G)}{p(\mathbf{x_1} \mid B)*...*p(\mathbf{x_d} \mid B)}\right) \\
+&=\ln \left(\frac{p_G}{p_B}\right)+\ln \left(\frac{p\left(x_1 \mid G\right)}{p^{\prime}\left(x_1 \mid B\right)}\right) +\ln \left(\frac{p\left(x_2 \mid G\right)}{p\left(x_2 \mid B\right)}\right)+\cdots+\ln \left(\frac{p\left(x_d \mid G\right)}{p\left(x_d \mid B\right)}\right) \\
+& = \ln \left(\frac{p_G}{p_B}\right)+WOE(x_1)+WOE(x_2)+...+WOE(x_d)
+\end{aligned}
+$$
+
